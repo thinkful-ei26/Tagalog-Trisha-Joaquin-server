@@ -2,6 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
@@ -21,6 +22,11 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
+
+app.get('/', (req, res) => {
+  return res.json({ message: 'Success' });
+});
 
 function runServer(port = PORT) {
   const server = app
