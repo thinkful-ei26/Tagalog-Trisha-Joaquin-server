@@ -5,10 +5,11 @@ const morgan = require('morgan');
 const mongoose = require('mongoose'); 
 const cors = require('cors');
 
-// const User = require('./models/user');
-// const { users } = require('./db/data');
+const passport = require('passport');
+const localStrategy = require('./passport/local');
 
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 const { PORT, CLIENT_ORIGIN, DATABASE_URL } = require('./config');
 //const { dbConnect } = require('./db-mongoose');
@@ -35,20 +36,13 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Mount routers
-// app.get('/users', (req, res, next) => {
-//   User.find()
-//     .then(results => {
-//       res.json(results);
-//     })
-//     .catch(
-//       err => next(err)
-//     );
-// });
-
 app.use('/api/users', usersRouter);
-
+app.use('/api/login', authRouter);
+app.use('/api/refresh', authRouter);
 
 //mount localStrategy, jwtStrategy
+passport.use(localStrategy);
+//passport.use(jwtStrategy);
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {

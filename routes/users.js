@@ -4,6 +4,7 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 
+/* DELETE GET user on /api/users IN PRODUCTION*/
 router.get('/', (req, res, next) => {
   User.find()
     .then(results => {
