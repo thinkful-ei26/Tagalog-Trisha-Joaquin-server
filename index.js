@@ -1,11 +1,6 @@
 'use strict';
 
 const express = require('express');
-<<<<<<< HEAD
-const cors = require('cors');
-const bodyParser = require('body-parser');
-=======
->>>>>>> 85afe4edec1d4eb0af51a5952b4131a11a4027e7
 const morgan = require('morgan');
 const mongoose = require('mongoose'); 
 const cors = require('cors');
@@ -33,17 +28,6 @@ app.use(
   })
 );
 
-<<<<<<< HEAD
-
-app.get('/', (req, res) => {
-  return res.json({ message: 'Success' });
-});
-
-function runServer(port = PORT) {
-  const server = app
-    .listen(port, () => {
-      console.info(`App listening on port ${server.address().port}`);
-=======
 // Create a static webserver
 app.use(express.static('public'));
 
@@ -107,7 +91,6 @@ if (require.main === module) {
     .then(instance => {
       const conn = instance.connections[0];
       console.info(`Connected to: mongodb://${conn.host}:${conn.port}/${conn.name}`);
->>>>>>> 85afe4edec1d4eb0af51a5952b4131a11a4027e7
     })
     .catch(err => {
       console.error(err);
