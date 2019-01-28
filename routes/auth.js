@@ -19,6 +19,7 @@ router.post('/', localAuth, (req, res) => {
 //Protect endpoints using JWT Strategy 
 const jwtAuth = passport.authenticate('jwt', options);
 
+//refresh token on /api/refresh/
 router.post('/', jwtAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
   res.json({ authToken });
