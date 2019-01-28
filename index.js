@@ -5,11 +5,13 @@ const morgan = require('morgan');
 const mongoose = require('mongoose'); 
 const cors = require('cors');
 
-const User = require('./models/user');
-const { users } = require('./db/data');
+// const User = require('./models/user');
+// const { users } = require('./db/data');
+
+const usersRouter = require('./routes/users');
 
 const { PORT, CLIENT_ORIGIN, DATABASE_URL } = require('./config');
-const { dbConnect } = require('./db-mongoose');
+//const { dbConnect } = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
@@ -33,15 +35,17 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Mount routers
-app.get('/users', (req, res, next) => {
-  User.find()
-    .then(results => {
-      res.json(results);
-    })
-    .catch(
-      err => next(err)
-    );
-});
+// app.get('/users', (req, res, next) => {
+//   User.find()
+//     .then(results => {
+//       res.json(results);
+//     })
+//     .catch(
+//       err => next(err)
+//     );
+// });
+
+app.use('/api/users', usersRouter);
 
 
 //mount localStrategy, jwtStrategy
