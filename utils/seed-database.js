@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const { DATABASE_URL } = require('../config');
+
 const User = require('../models/user');
 const { users } = require('../db/data');
 
