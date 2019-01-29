@@ -103,12 +103,6 @@ router.post('/', (req, res, next) => {
 
   return User.hashPassword(password)
     .then( digest => {
-      // const newUser = { 
-      //   firstname,
-      //   lastname,
-      //   username, 
-      //   password: digest
-      // }; 
       const newUser = { 
         name,
         username, 
@@ -116,16 +110,26 @@ router.post('/', (req, res, next) => {
       }; 
       return User.create(newUser);
     })
+    .then(user => user.generateQuestions())
     .then( result => {
-      return res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+      return res
+        .location(`${req.originalUrl}/${result.id}`)
+        .status(201)
+        .json(result);
     })
     .catch( err => {
-      if(err.code === 11000 ) { //11000 is a mongo error code that checks for a duplicates
+      if(err.code === 11000 ) { //11000 is a mongo error code that checks for duplicate username
         err = new Error('The username already exists');
-        err.status = 400;
+        err.status = 422;
+        err.location = 'username';
+        err.reason = 'ValidationError';
+
+        return Promise.reject(err);
       }
       next(err);
     });
+
+  //create a sessions router this will belong to a specific user so use req.user.id
 
 });
 

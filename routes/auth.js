@@ -11,8 +11,10 @@ const options = { session: false, failWithError: true };
 const localAuth = passport.authenticate('local', options);
 
 /* POST on /api/login and send jwt authToken as response*/
-router.post('/', localAuth, (req, res) => {
+router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
+
+  //on login, you want to generate questions req.user.generateQuestions()
   res.json({ authToken });
 });
 
@@ -20,7 +22,7 @@ router.post('/', localAuth, (req, res) => {
 const jwtAuth = passport.authenticate('jwt', options);
 
 //refresh token on /api/refresh/
-router.post('/', jwtAuth, (req, res) => {
+router.post('/refresh', jwtAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
   res.json({ authToken });
 });
@@ -30,7 +32,7 @@ const createAuthToken = (user) => {
   return jwt.sign( { user }, JWT_SECRET, {
     subject: user.username,
     expiresIn: JWT_EXPIRY,
-    algorithm: 'HS256'
+    // algorithm: 'HS256'
   });
 };
 
