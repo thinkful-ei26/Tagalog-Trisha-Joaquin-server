@@ -1,5 +1,7 @@
 'use strict';
 
+//each user should have preloaded question
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -18,7 +20,8 @@ const UserSchema = new mongoose.Schema({
   password : { 
     type : String, 
     required : true 
-  }
+  }, 
+  // question: 
 });
 
 // _id still exists but just replacing user.id on virtualize whenever you toJSON something
