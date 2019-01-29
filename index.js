@@ -41,7 +41,8 @@ app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
 
-app.use(function (req, res, next) {
+// CORS
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
@@ -51,15 +52,23 @@ app.use(function (req, res, next) {
   next();
 });
 
+//mount localStrategy, jwtStrategy
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 // Mount routers
 app.use('/api/users', usersRouter);
 app.use('/api/auth/login', authRouter);
 app.use('/api/refresh', authRouter);
 
-//mount localStrategy, jwtStrategy
-passport.use(localStrategy);
-passport.use(jwtStrategy);
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'rosebud'
+  });
+});
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
