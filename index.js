@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose'); 
@@ -39,9 +41,20 @@ app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
+
+
 // Mount routers
 app.use('/api/users', usersRouter);
-app.use('/api/login', authRouter);
+app.use('/api/auth/login', authRouter);
 app.use('/api/refresh', authRouter);
 
 //mount localStrategy, jwtStrategy

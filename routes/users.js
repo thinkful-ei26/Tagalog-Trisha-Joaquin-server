@@ -5,16 +5,16 @@ const User = require('../models/user');
 const router = express.Router();
 
 /* DELETE GET user on /api/users IN PRODUCTION*/
-router.get('/', (req, res, next) => {
-  User.find()
-    .then(results => {
-      console.log(results);
-      res.json(results);
-    })
-    .catch(
-      err => next(err)
-    );
-});
+// router.get('/', (req, res, next) => {
+//   User.find()
+//     .then(results => {
+//       console.log(results);
+//       res.json(results);
+//     })
+//     .catch(
+//       err => next(err)
+//     );
+// });
 
 /* POST/CREATE user on /api/users */
 router.post('/', (req, res, next) => {
