@@ -12,9 +12,7 @@ const localStrategy = require('./passport/local');
 const jwtStrategy = require('./passport/jwt');
 
 const { PORT, CLIENT_ORIGIN, DATABASE_URL } = require('./config');
-//const { dbConnect } = require('./db-mongoose');
-// const {dbConnect} = require('./db-knex');
-
+const { error404, error500 } = require('./error-middleware');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 
@@ -58,36 +56,20 @@ passport.use(jwtStrategy);
 
 // Mount routers
 app.use('/api/users', usersRouter);
-app.use('/api/auth/login', authRouter);
-app.use('/api/auth/refresh', authRouter);
+app.use('/api/auth', authRouter);
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
+// const jwtAuth = passport.authenticate('jwt', { session: false });
 
-// A protected endpoint which needs a valid JWT to access it
-app.get('/api/auth/protected', jwtAuth, (req, res) => {
-  console.log('res api/auth/protected:', res);
-  return res.json({
-    data: 'rosebud'
-  });
-});
+// // A protected endpoint which needs a valid JWT to access it
+// app.get('/api/auth/protected', jwtAuth, (req, res) => {
+//   console.log('res api/auth/protected:', res);
+//   return res.json({
+//     data: 'rosebud'
+//   });
+// });
 
-// Custom 404 Not Found route handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// Error first handler
-app.use((err, req, res, next) => {
-  if (err.status) {
-    const errBody = Object.assign({}, err, { message: err.message });
-    res.status(err.status).json(errBody);
-  } else {
-    res.status(500).json({ message: 'Internal Server Error' });
-    console.log(err.name === 'FakeError' ? '' : err);
-  }
-});
+app.use(error404);
+app.use(error500);
 
 // Listen for incoming connections
 if (require.main === module) {
