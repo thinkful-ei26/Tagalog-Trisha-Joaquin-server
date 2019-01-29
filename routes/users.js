@@ -4,16 +4,17 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  User.find()
-    .then(results => {
-      console.log(results);
-      res.json(results);
-    })
-    .catch(
-      err => next(err)
-    );
-});
+/* DELETE GET user on /api/users IN PRODUCTION*/
+// router.get('/', (req, res, next) => {
+//   User.find()
+//     .then(results => {
+//       console.log(results);
+//       res.json(results);
+//     })
+//     .catch(
+//       err => next(err)
+//     );
+// });
 
 /* POST/CREATE user on /api/users */
 router.post('/', (req, res, next) => {
@@ -94,15 +95,22 @@ router.post('/', (req, res, next) => {
   }
 
   //pre-trim username and password
-  let { username, password, firstname = '', lastname = '' } = req.body;
-  firstname = firstname.trim();
-  lastname = firstname.trim();
+  // let { username, password, firstname = '', lastname = '' } = req.body;
+  // firstname = firstname.trim();
+  // lastname = firstname.trim();
+  let { username, password, name = ''} = req.body;
+  name = name.trim();
 
   return User.hashPassword(password)
     .then( digest => {
+      // const newUser = { 
+      //   firstname,
+      //   lastname,
+      //   username, 
+      //   password: digest
+      // }; 
       const newUser = { 
-        firstname,
-        lastname,
+        name,
         username, 
         password: digest
       }; 

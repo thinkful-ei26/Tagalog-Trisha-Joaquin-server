@@ -1,27 +1,34 @@
 'use strict';
 
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose'); 
 const cors = require('cors');
+const passport = require('passport');
 
-// const User = require('./models/user');
-// const { users } = require('./db/data');
-
-const usersRouter = require('./routes/users');
+const localStrategy = require('./passport/local');
+const jwtStrategy = require('./passport/jwt');
 
 const { PORT, CLIENT_ORIGIN, DATABASE_URL } = require('./config');
 //const { dbConnect } = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
 
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+
+// Create an Express application
 const app = express();
 
+// Log all requests. Skip logging during
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
     skip: (req, res) => process.env.NODE_ENV === 'test'
   })
 );
 
+//allow cross origin communication b/w front-end & backend
 app.use(
   cors({
     origin: CLIENT_ORIGIN
@@ -34,21 +41,35 @@ app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
 
-// Mount routers
-// app.get('/users', (req, res, next) => {
-//   User.find()
-//     .then(results => {
-//       res.json(results);
-//     })
-//     .catch(
-//       err => next(err)
-//     );
-// });
-
-app.use('/api/users', usersRouter);
-
+// CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
 
 //mount localStrategy, jwtStrategy
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+// Mount routers
+app.use('/api/users', usersRouter);
+app.use('/api/auth/login', authRouter);
+app.use('/api/auth/refresh', authRouter);
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/auth/protected', jwtAuth, (req, res) => {
+  console.log('res api/auth/protected:', res);
+  return res.json({
+    data: 'rosebud'
+  });
+});
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
@@ -67,22 +88,6 @@ app.use((err, req, res, next) => {
     console.log(err.name === 'FakeError' ? '' : err);
   }
 });
-
-// function runServer(port = PORT) {
-//   const server = app
-//     .listen(port, () => {
-//       console.info(`App listening on port ${server.address().port}`);
-//     })
-//     .on('error', err => {
-//       console.error('Express failed to start');
-//       console.error(err);
-//     });
-// }
-
-// if (require.main === module) {
-//   dbConnect();
-//   runServer();
-// }
 
 // Listen for incoming connections
 if (require.main === module) {
