@@ -15,14 +15,12 @@ router
   .get((req, res, next) => {
     User.findById(req.user.id)
       .then((user) => {
-        // console.log('from server questions user: ',user);
         const { word, id } = user.questionData[0].question; //the index needs to dynamically change 
         // { question: { word, id}}
-        res.json(user.questionData);
+        res.json({ question: { word, id}});
       })
       .catch(next);
   })
-
   .post((req, res, next) => {
     const { question, answer } = req.body;
 
