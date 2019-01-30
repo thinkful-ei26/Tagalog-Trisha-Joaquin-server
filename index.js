@@ -57,18 +57,8 @@ passport.use(jwtStrategy);
 
 // Mount routers
 app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
+app.use('/api/auth/', authRouter); //login & refresh
 app.use('/api/question', questionRouter);
-
-// const jwtAuth = passport.authenticate('jwt', { session: false });
-
-// // A protected endpoint which needs a valid JWT to access it
-// app.get('/api/auth/protected', jwtAuth, (req, res) => {
-//   console.log('res api/auth/protected:', res);
-//   return res.json({
-//     data: 'rosebud'
-//   });
-// });
 
 app.use(error404);
 app.use(error500);

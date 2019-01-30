@@ -13,7 +13,7 @@ const localAuth = passport.authenticate('local', options);
 /* POST on /api/login and send jwt authToken as response*/
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
-
+  // console.log('REQ LOOK HERE', req);
   //on login, you want to generate questions req.user.generateQuestions()
   res.json({ authToken });
 });
