@@ -15,15 +15,17 @@ router
   .get((req, res, next) => {
     User.findById(req.user.id)
       .then((user) => {
+        //console.log(user);
         const { word, id } = user.questionData[0].question; //the index needs to dynamically change 
         // { question: { word, id}}
-        res.json({ question: { word, id}});
+        res.json({ word });
+        //res.json( user.questionData[0].question.word);
       })
       .catch(next);
   })
-  .post((req, res, next) => {
-    const { question, answer } = req.body;
-    console.log('req.body',req.body);
+  // .post((req, res, next) => {
+  //   const { question, answer } = req.body;
+  //   console.log('req.body',req.body);
 
     // if (!question || !question.id) {
     //   const err = new Error('`question.id` required in request body');
@@ -40,14 +42,14 @@ router
     // let correct;
     // let currentQuestion;
 
-    User.findById(req.user.id)
-      .then(result => {
-        //currentQuestion = result.questionData[0].question;
-        // console.log('currentQuestion',currentQuestion);
-        res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
-      })
-      .catch(next);
-  });
+  //   User.findById(req.user.id)
+  //     .then(result => {
+  //       //currentQuestion = result.questionData[0].question;
+  //       // console.log('currentQuestion',currentQuestion);
+  //       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+  //     })
+  //     .catch(next);
+  // });
 
 module.exports = router;
 
