@@ -1,10 +1,41 @@
+// 'use strict';
+
+// //each user should have preloaded question
+
+// const mongoose = require('mongoose');
+// const bcrypt = require('bcryptjs');
+// const Question = require('./question');
+
+// const UserSchema = new mongoose.Schema({
+//   name : { 
+//     type : String, 
+//     default: '',
+//     required: true, 
+//   },
+//   username : { 
+//     type : String, 
+//     required: true, 
+//     unique: true 
+//   },
+//   password : { 
+//     type : String, 
+//     required : true 
+//   }, 
+//   questionData: [
+//     {
+//       question: Question.schema,
+//       // nextQuestion: Number
+//     }
+//   ]
+// });
+
 'use strict';
 
 //each user should have preloaded question
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Question = require('./question');
+// const Question = require('./question');
 
 const UserSchema = new mongoose.Schema({
   name : { 
@@ -23,11 +54,19 @@ const UserSchema = new mongoose.Schema({
   }, 
   questionData: [
     {
-      question: Question.schema,
-      // nextQuestion: Number
+      _id: mongoose.Schema.Types.ObjectId,
+      word: String,
+      answer: String,
+      memoryStrength: {type: Number, default: 1},
+      next: Number
     }
-  ]
+  ], 
+  head: {
+    type: Number,
+    default: 0
+  }
 });
+
 
 // _id still exists but just replacing user.id on virtualize whenever you toJSON something
 UserSchema.set('toJSON', {
@@ -48,21 +87,21 @@ UserSchema.statics.hashPassword = function (incomingPassword) {
   return digest;
 };
 
-UserSchema.methods.generateQuestions = function userGenerateQuestions() {
-  if (this.questionData.length > 0) {
-    return Promise.resolve(this);
-  }
+// UserSchema.methods.generateQuestions = function userGenerateQuestions() {
+//   if (this.questionData.length > 0) {
+//     return Promise.resolve(this);
+//   }
 
-  return Question
-    .find()
-    .then( questions => {
-      this.questionData = questions.map((question, index) => ({
-        question,
-        nextQuestion: index //increment using index 
-      }));
+//   return Question
+//     .find()
+//     .then( questions => {
+//       this.questionData = questions.map((question, index) => ({
+//         question,
+//         nextQuestion: index //increment using index 
+//       }));
 
-      return this.save();  //https://docs.mongodb.com/manual/reference/method/db.collection.save/
-    });
-};
+//       return this.save();  //https://docs.mongodb.com/manual/reference/method/db.collection.save/
+//     });
+// };
 
 module.exports = mongoose.model('User', UserSchema);

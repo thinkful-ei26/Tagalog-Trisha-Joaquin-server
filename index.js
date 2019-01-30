@@ -15,7 +15,7 @@ const { PORT, CLIENT_ORIGIN, DATABASE_URL } = require('./config');
 const { error404, error500 } = require('./error-middleware');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const questionRouter = require('./routes/question');
+//const questionRouter = require('./routes/question');
 
 // Create an Express application
 const app = express();
@@ -58,7 +58,7 @@ passport.use(jwtStrategy);
 // Mount routers
 app.use('/api/users', usersRouter);
 app.use('/api/auth/', authRouter); //login & refresh
-app.use('/api/question', questionRouter);
+//app.use('/api/question', questionRouter);
 
 app.use(error404);
 app.use(error500);
