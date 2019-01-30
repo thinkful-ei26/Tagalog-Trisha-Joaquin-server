@@ -22,13 +22,13 @@ router
       .catch(next);
   })
   .post((req, res, next) => {
-    const { question, answer } = req.body;
-
-    console.log('req.body',req.body);
-    console.log('res',res);
-
+    
+    console.log('REQBODY',req.body);
+    console.log(req.user.id);
+    
     User.findById(req.user.id)
       .then(result => {
+        console.log(result.questionData[0].question);
         res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
       })
       .catch(next);
