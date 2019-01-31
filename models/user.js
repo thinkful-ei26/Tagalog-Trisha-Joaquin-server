@@ -38,6 +38,17 @@ UserSchema.set('toJSON', {
   }
 });
 
+UserSchema.methods.serialize = function() {
+  return {
+    username: this.username,
+    name: this.name || '',
+    id: this._id,
+    words: this.words,
+    head: this.head,
+
+  };
+};
+
 UserSchema.methods.validatePassword = function (incomingPassword) {
   return bcrypt.compare(incomingPassword, this.password);
 };

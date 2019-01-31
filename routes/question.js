@@ -1,59 +1,98 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose');
 const passport = require('passport');
-
 const User = require('../models/user');
+const Question = require('../models/question');
 const router = express.Router();
 
 const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
 router.use(jwtAuth);
 
-let currentQuestionIndex = 0; ///the index needs to dynamically change on click of the next button
+let currentHead;
+
 router
   .get( '/', (req, res, next) => {
     User.findById(req.user.id)
       .then((user) => {
-
         //on click of the next button, change the currentQUestion
-        const { word, answer, id } = user.questionData[currentQuestionIndex]; 
+        const { word, answer, id } = user.questionData[user.head]; 
+        currentHead = user.head+1;
         // { question: { word, id}}
-        res.json({word, answer, id}); 
+        //res.json(user);
+        res.json({word, answer, id, head: user.head }); 
         //after confirming the answer matches on the client side, do a put request to change the m, we need the question id to be able to find the question id on the server
     
       })
       .catch(next);
   });
 
-// router.post('/', (req, res, next) => {
-//   const { question, answer } = req.body;
-//   console.log('req.body',req.body);
+/* ========== PUT/UPDATE A SINGLE ITEM ========== */
+router
+  .put('/:userId',(req, res, next) => {
+    const { userId } = req.params;
+    //console.log('REQBODY',req.body);
+    const { word, id, userinput, answer } = req.body;
+    //const userId = req.user.id;
 
-//   res.json({message: 'message'});
-// if (!question || !question.id) {
-//   const err = new Error('`question.id` required in request body');
-//   err.code = 400;
-//   throw err;
-// }
+    /***** Never trust users - validate input *****/
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const err = new Error('The `id` is not valid');
+      err.status = 400;
+      return next(err);
+    }
 
-// if (!answer) {
-//   const err = new Error('`answer` required');
-//   err.code = 400;
-//   throw err;
-// }
-    
-// let correct;
-// let currentQuestion;
+    if (!word) {
+      const err = new Error('Missing `word` in request body');
+      err.status = 400;
+      return next(err);
+    }
 
-// User.findById(req.user.id)
-//   .then(result => {
-//     //currentQuestion = result.questionData[0].question;
-//     // console.log('currentQuestion',currentQuestion);
-//     res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
-//   })
-// .catch(next);
-// });
+    if (!id && !mongoose.Types.ObjectId.isValid(id)) {
+      const err = new Error('Missing question `id` in request body');
+      err.status = 400;
+      return next(err);
+    }
+
+    if (!answer) {
+      const err = new Error('Missing `answer` in request body');
+      err.status = 400;
+      return next(err);
+    }
+
+    if (!userinput) {
+      const err = new Error('Missing `userinput` in request body');
+      err.status = 400;
+      return next(err);
+    }
+
+    const nextQuestion = {
+      m: 0,
+      word: 'saya',
+      answer: 'happy',
+      next: 0,
+    };
+
+    //if the answer is correct: 
+    if( userinput === answer ){
+      Question.findOneAndUpdate(userId, nextQuestion)
+        .then(result => {
+        // const changeM = {
+        //   m: result.m*2,
+        //   word: result.word,
+        //   answer: result.answer,
+        //   next: currentHead,
+        //   id: result.id
+        // };
+        // currentHead+1;
+        // res.json(changeM);
+          res.json(result);
+        })
+        .catch(err => {
+          next(err);
+        });
+    } 
+  });
 
 module.exports = router;
-
-//get the answer, change the next pointer, based on the response send a feedback 

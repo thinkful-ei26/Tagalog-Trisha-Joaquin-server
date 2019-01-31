@@ -111,11 +111,12 @@ router.post('/', (req, res, next) => {
       return User.create(newUser);
     })
     .then(user => user.generateQuestions())
-    .then( result => {
+    .then( user => {
+      console.log('user routes 115',user);
       return res
-        .location(`${req.originalUrl}/${result.id}`)
+        .location(`${req.originalUrl}/${user.id}`)
         .status(201)
-        .json(result);
+        .json(user.serialize());
     })
     .catch( err => {
       if(err.code === 11000 ) { //11000 is a mongo error code that checks for duplicate username
