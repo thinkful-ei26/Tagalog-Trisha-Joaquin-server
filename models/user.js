@@ -95,15 +95,20 @@ UserSchema.methods.generateQuestions = function userGenerateQuestions() {
   return Question
     .find()
     .then( questions => {
-      // this.questionData = questions.map((question, index) => ({
-      //   question,
-      //   nextQuestion: index //increment using index 
-     
-      // }));
+      this.questionData = questions;
       console.log('generate questions: ',questions);
-
-      return this.save();  //https://docs.mongodb.com/manual/reference/method/db.collection.save/
+      return this.save();
     });
+  // .then( questions => {
+  //   this.questionData = questions //.map((question, index) => ({
+  //     // question,
+  //     // nextQuestion: index //increment using index 
+  //   // }));
+  // }
+  //   console.log('generate questions: ',questions);
+
+  //   return this.save();  //https://docs.mongodb.com/manual/reference/method/db.collection.save/
+  // });
 };
 
 module.exports = mongoose.model('User', UserSchema);
