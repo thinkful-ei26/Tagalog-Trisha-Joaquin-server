@@ -61,40 +61,6 @@ router
 router
   .put('/:userid',(req, res, next) => {
     const { userid } = req.params;
-    //console.log('REQBODY',req.body);
-    //const { word, id } = req.body;
-    //const userId = req.user.id;
-
-    // /***** Never trust users - validate input *****/
-    // if (!mongoose.Types.ObjectId.isValid(userid)) {
-    //   const err = new Error('The `id` is not valid');
-    //   err.status = 400;
-    //   return next(err);
-    // }
-
-    // if (!word) {
-    //   const err = new Error('Missing `word` in request body');
-    //   err.status = 400;
-    //   return next(err);
-    // }
-
-    // if (!id && !mongoose.Types.ObjectId.isValid(id)) {
-    //   const err = new Error('Missing question `id` in request body');
-    //   err.status = 400;
-    //   return next(err);
-    // }
-
-    // if (!answer) {
-    //   const err = new Error('Missing `answer` in request body');
-    //   err.status = 400;
-    //   return next(err);
-    // }
-
-    // if (!userinput) {
-    //   const err = new Error('Missing `userinput` in request body');
-    //   err.status = 400;
-    //   return next(err);
-    // }
 
     let changeQ = {
       head: currentHead+1
@@ -105,7 +71,7 @@ router
     User.findOneAndUpdate(userid, changeQ, { new: true})
       .then(result => {
         //res.json(changeM);
-        res.json(result);
+        res.json(result.questionData[currentHead]);
       })
       .then(result => {
         return currentHead++;
