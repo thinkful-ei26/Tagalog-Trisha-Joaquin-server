@@ -68,10 +68,10 @@ router
     }
 
     const nextQuestion = {
-      m: 0,
+      m: 2,
       word: 'saya',
       answer: 'happy',
-      next: 0,
+      next: 2,
     };
 
     //if the answer is correct: 
@@ -86,7 +86,7 @@ router
         //   id: result.id
         // };
         // currentHead+1;
-        // res.json(changeM);
+        //res.json(changeM);
           res.json(result);
         })
         .catch(err => {
