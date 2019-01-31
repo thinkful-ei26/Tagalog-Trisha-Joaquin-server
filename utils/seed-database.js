@@ -5,7 +5,7 @@ const { DATABASE_URL } = require('../config');
 
 const User = require('../models/user');
 const Question = require('../models/question');
-const { users, questions  } = require('../db/data');
+const { users, questions } = require('../db/data');
 
 console.log(`Connecting to mongodb at ${DATABASE_URL}`);
 mongoose.connect(DATABASE_URL, { useNewUrlParser:true })

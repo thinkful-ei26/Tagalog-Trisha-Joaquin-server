@@ -110,7 +110,7 @@ router.post('/', (req, res, next) => {
       }; 
       return User.create(newUser);
     })
-    //.then(user => user.generateQuestions())
+    .then(user => user.generateQuestions())
     .then( result => {
       return res
         .location(`${req.originalUrl}/${result.id}`)
