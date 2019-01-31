@@ -28,46 +28,6 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-// 'use strict';
-
-// //each user should have preloaded question
-
-// const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
-// const Question = require('./question');
-
-// const UserSchema = new mongoose.Schema({
-//   name : { 
-//     type : String, 
-//     default: '',
-//     required: true, 
-//   },
-//   username : { 
-//     type : String, 
-//     required: true, 
-//     unique: true 
-//   },
-//   password : { 
-//     type : String, 
-//     required : true 
-//   }, 
-//   // questionData: [
-//   //   {
-//   //     _id: mongoose.Schema.Types.ObjectId,
-//   //     word: String,
-//   //     answer: String,
-//   //     memoryStrength: {type: Number, default: 1},
-//   //     next: Number
-//   //   }
-//   // ], 
-//   questionData: Question.schema,
-//   head: {
-//     type: Number,
-//     default: 0
-//   }
-// });
-
-
 // _id still exists but just replacing user.id on virtualize whenever you toJSON something
 UserSchema.set('toJSON', {
   virtuals: true, 
@@ -95,20 +55,14 @@ UserSchema.methods.generateQuestions = function userGenerateQuestions() {
   return Question
     .find()
     .then( questions => {
+      //if there's questions already in questionData in the user collection, resolve the promise
+      if(this.questionData.length > 0){
+        Promise.resolve(this);
+      }
+      //otherwise, generate questions from seeded question db
       this.questionData = questions;
-      console.log('generate questions: ',questions);
       return this.save();
     });
-  // .then( questions => {
-  //   this.questionData = questions //.map((question, index) => ({
-  //     // question,
-  //     // nextQuestion: index //increment using index 
-  //   // }));
-  // }
-  //   console.log('generate questions: ',questions);
-
-  //   return this.save();  //https://docs.mongodb.com/manual/reference/method/db.collection.save/
-  // });
 };
 
 module.exports = mongoose.model('User', UserSchema);

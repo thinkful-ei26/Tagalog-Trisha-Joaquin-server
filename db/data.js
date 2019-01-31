@@ -1,41 +1,5 @@
-// 'use strict';
-// // seed data for multiple users
-
-// const users = [
-//   {
-//     _id: '000000000000000000000001',
-//     name: 'Trisha',
-//     username: 'kronicle114',
-//     // hash for "password"
-//     password: '$2a$10$QJCIX42iD5QMxLRgHHBJre2rH6c6nI24UysmSYtkmeFv6X8uS1kgi'
-//   },
-//   {
-//     _id: '000000000000000000000002',
-//     name: 'Joaquin',
-//     username: 'joaquinfox',
-//     // hash for "password"
-//     password: '$2a$10$QJCIX42iD5QMxLRgHHBJre2rH6c6nI24UysmSYtkmeFv6X8uS1kgi'
-//   }
-// ];
-
-// const questions = [
-//   {
-//     word: 'saya', 
-//     answer: 'happy'
-//   },
-//   {
-//     word: 'tawa', 
-//     answer: 'laughing'
-//   },
-//   {
-//     word: 'kamusta', 
-//     answer: 'How are you?'
-//   },
-// ];
-
-// module.exports = { users, questions };
-
 'use strict';
+
 // seed data for multiple users
 const questions = [
   {
@@ -112,7 +76,7 @@ const users = [
     name: 'Trisha',
     username: 'kronicle114',
     // hash for "password123"
-    password: '$2a$10$wiCgi0Hty08tHnfFLhCOie0iYXa9dCNKimdM7asnGUQQ0BhSw6Fuu',
+    password: '$2a$10$Wz21bpsMCBBRdRztr2.ZYOw9sJGkFgcowKZCMtvaqdBuhvofmZHRe',
     questionData: questions,
     head: 1
   },
@@ -121,7 +85,7 @@ const users = [
     name: 'Joaquin',
     username: 'joaquinfox',
     // hash for "password123"
-    password: '$$2a$10$wiCgi0Hty08tHnfFLhCOie0iYXa9dCNKimdM7asnGUQQ0BhSw6Fuu',
+    password: '$2a$10$Wz21bpsMCBBRdRztr2.ZYOw9sJGkFgcowKZCMtvaqdBuhvofmZHRe',
     questionData: questions,
     head: 2
   }
