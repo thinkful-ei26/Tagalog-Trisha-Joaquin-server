@@ -110,7 +110,7 @@ router.post('/', (req, res, next) => {
       }; 
       return User.create(newUser);
     })
-    .then(user => user.generateQuestions())
+    // .then(user => user.generateQuestions())
     .then( user => {
       console.log('user routes 115',user);
       return res
