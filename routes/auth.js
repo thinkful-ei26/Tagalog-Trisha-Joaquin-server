@@ -22,8 +22,7 @@ const createAuthToken = (user) => {
 /* POST on /api/login and send jwt authToken as response*/
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
-  console.log('REQ LOOK HERE', req);
-  //on login, you want to generate questions req.user.generateQuestions()
+  //on login, generate questions req.user.userGenerateQuestions()
   res.json({ authToken });
 });
 
