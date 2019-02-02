@@ -95,9 +95,6 @@ router.post('/', (req, res, next) => {
   }
 
   //pre-trim username and password
-  // let { username, password, firstname = '', lastname = '' } = req.body;
-  // firstname = firstname.trim();
-  // lastname = firstname.trim();
   let { username, password, name = ''} = req.body;
   name = name.trim();
 
