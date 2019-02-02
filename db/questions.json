@@ -1,0 +1,67 @@
+{
+  "m" : 1,
+  "word" : "sandali",
+  "answer" : "wait",
+  "next" : 1
+}
+{
+  "m" : 1,
+  "word" : "saya",
+  "answer" : "happy",
+  "next" : 2
+}
+{
+  "m" : 1,
+  "word" : "tawa",
+  "answer" : "laughing",
+  "next" : 3
+}
+{
+  "m" : 1,
+  "word" : "mahal",
+  "answer" : "love",
+  "next" : 4
+}
+{
+
+  "m" : 1,
+  "word" : "hindi",
+  "answer" : "no",
+  "next" : 5
+}
+{
+  "m" : 1,
+  "word" : "kamusta",
+  "answer" : "How are you?",
+  "next" : 6
+}
+{
+  "m" : 1,
+  "word" : "mahirap",
+  "answer" : "tough",
+  "next" : 7
+}
+{
+  "m" : 1,
+  "word" : "sarap",
+  "answer" : "delicious",
+  "next" : 8
+}
+{
+  "m" : 1,
+  "word" : "malungkot",
+  "answer" : "sad",
+  "next" : 9
+}
+{
+  "m" : 1,
+  "word" : "umaga",
+  "answer" : "morning",
+  "next" : 10
+}
+{
+  "m" : 1,
+  "word" : "gabi",
+  "answer" : "night",
+  "next" : 0
+}
