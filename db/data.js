@@ -11,7 +11,7 @@ const questions = [
   {
     word: 'tawa', 
     answer: 'laughing',
-    m: 2,
+    m: 1,
     next: 2
   },
   {
