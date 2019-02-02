@@ -28,72 +28,51 @@ router.get('/', (req, res, next) => {
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/:userid', (req, res, next) => {
   const { userid } = req.params;
-  const { word, answer, id, head, userinput } = req.body.answer;
-  console.log('REQ.BODY PUT: ', req.body.answer);
-
+  const { head, userinput } = req.body.answer;
+ 
   User.findById(userid)
     .then(user => {
-      //console.log('reqbody.head: ',head); // 0
-      // console.log('USER PUT:', user.questionData[head]); // next = 1, word = sandali, head = 0
-
+     
       //save the value of the current head
       let currentHead = user.head;
-      //console.log('current Head is',currentHead); //currentHead is a tempHead = 0;
-
+   
       //save the node that you just answered
       let currentNode = user.questionData[head];
       //console.log('current node is', currentNode);
 
       //if answer is correct
       if (userinput === user.questionData[head].answer) {
-        // console.log('correct answer: CURRENT QUESTION in if statement:', user.questionData[head]);
-        //change the mValue
+        //double the mValue if answer is correct
         user.questionData[head].m *= 2;
-        //user.questionData[head].next = 0;
-        console.log('change current m value if answer is correct: ',user.questionData[head]);
-        //change the totalCorrect of the user
-      } else {
-        console.log('INCORRECT answer: current QUESTION in if statement', user.questionData[head]);
-        //change the mValue
+      } else { // if incorrect, change current m value to ONE 
         user.questionData[head].m = 1;
-        //change the totalCorrect of the user
-        console.log('change current m value to ONE if incorrect: ',user.questionData[head].m);
+        //change the totalCorrect of the user questions for progress bar
       }
 
-      /* ====== NEXT QUESTION LINKED LIST MANIPULATION ==== */
+      /* ========= NEXT QUESTION LINKED LIST MANIPULATION ========= */
+
       //find the location of the answered node based on mValue
       let newLocation = currentNode.m;
-      console.log('NEW LOCATION IS', newLocation); // if incorrect = 1, correct *2
-
-      //change the current head to whoever answered node's next pointer is addressed to
+      
+      //set the current head to the answered node's next pointer
       user.head = currentNode.next > 0 ? currentNode.next : 0;
-      console.log('NEW HEAD IS', user.head); //based on .next value = 2 for 'saya'
-
+      
       let current = currentNode;
       let counter = 0;
-      //find the new insertion point on questionData array
-      // newLocation = 4; counter: 0
+      //find the currentNode's new insertion point on questionData linkedlist
       while (counter < newLocation && counter < user.questionData.length - 1) {
         current = user.questionData[current.next];
         counter++;
       }
 
-      console.log('new node resulting from while loop: ', current);
       //node is now where we want our currentNode to be inserted
-
-      //console.log('previous answered node:',user.questionData[currentHead]);
-      //console.log('current.next',current.next);
-      console.log('87 before: ',user.questionData[currentHead]);
+      // console.log('updated node resulting from while loop: ', current);
+     
+      //update the next on the previous question & the current question by swapping the current node's next with the currentHead's next (held in a temp var)
       user.questionData[currentHead].next = current.next;
-      console.log('87 after: ',user.questionData[currentHead]);
       current.next = currentHead;
 
       //save all the updates we just made to user.head and user.words:
-
-      // console.log('updated user: ', user);
-      // console.log('new head', user.head);
-      // console.log('reqbody previous head: ', head);
-      // return res.json(user);
       return User.findByIdAndUpdate(
         userid,
         { head: user.head, questionData: [...user.questionData] },
