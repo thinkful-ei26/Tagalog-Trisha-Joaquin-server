@@ -58,22 +58,22 @@ UserSchema.statics.hashPassword = function (incomingPassword) {
   return digest;
 };
 
-// UserSchema.methods.generateQuestions = function userGenerateQuestions() {
-//   if (this.questionData.length > 0) {
-//     return Promise.resolve(this);
-//   }
+UserSchema.methods.generateQuestions = function userGenerateQuestions() {
+  if (this.questionData.length > 0) {
+    return Promise.resolve(this);
+  }
 
-//   return Question
-//     .find()
-//     .then( questions => {
-//       //if there's questions already in questionData in the user collection, resolve the promise
-//       if(this.questionData.length > 0){
-//         Promise.resolve(this);
-//       }
-//       //otherwise, generate questions from seeded question db
-//       this.questionData = questions;
-//       return this.save();
-//     });
-// };
+  return Question
+    .find()
+    .then( questions => {
+      //if there's questions already in questionData in the user collection, resolve the promise
+      if(this.questionData.length > 0){
+        Promise.resolve(this);
+      }
+      //otherwise, generate questions from seeded question db
+      this.questionData = questions;
+      return this.save();
+    });
+};
 
 module.exports = mongoose.model('User', UserSchema);

@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config();
+require('dotenv').config(); //https://medium.freecodecamp.org/heres-how-you-can-actually-use-node-environment-variables-8fdf98f53a0a
 
 module.exports = {
   PORT: process.env.PORT || 8080,
