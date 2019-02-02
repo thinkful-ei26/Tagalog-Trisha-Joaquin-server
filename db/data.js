@@ -3,20 +3,20 @@
 // seed data for multiple users
 const questions = [
   {
-    word: 'saya', 
-    answer: 'happy',
+    word: 'sandali', 
+    answer: 'wait',
     m: 1,
     next: 1
   },
   {
-    word: 'tawa', 
-    answer: 'laughing',
+    word: 'saya', 
+    answer: 'happy',
     m: 1,
     next: 2
   },
   {
-    word: 'kamusta', 
-    answer: 'How are you?',
+    word: 'tawa', 
+    answer: 'laughing',
     m: 1,
     next: 3
   },
@@ -33,20 +33,20 @@ const questions = [
     next: 5
   },
   {
-    word: 'mahirap', 
-    answer: 'tough',
+    word: 'kamusta', 
+    answer: 'How are you?',
     m: 1,
     next: 6
   },
   {
-    word: 'sarap', 
-    answer: 'delicious',
+    word: 'mahirap', 
+    answer: 'tough',
     m: 1,
     next: 7
   },
   {
-    word: 'sandali', 
-    answer: 'wait',
+    word: 'sarap', 
+    answer: 'delicious',
     m: 1,
     next: 8
   },
@@ -78,7 +78,7 @@ const users = [
     // hash for "password123"
     password: '$2a$10$Wz21bpsMCBBRdRztr2.ZYOw9sJGkFgcowKZCMtvaqdBuhvofmZHRe',
     questionData: questions,
-    head: 1
+    head: 0
   },
   {
     _id: '000000000000000000000002',
@@ -87,7 +87,7 @@ const users = [
     // hash for "password123"
     password: '$2a$10$Wz21bpsMCBBRdRztr2.ZYOw9sJGkFgcowKZCMtvaqdBuhvofmZHRe',
     questionData: questions,
-    head: 2
+    head: 0
   }
 ];
 
