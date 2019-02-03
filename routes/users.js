@@ -1,20 +1,7 @@
 'use strict';
-
 const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
-
-/* DELETE GET user on /api/users IN PRODUCTION*/
-router.get('/', (req, res, next) => {
-  User.find()
-    .then(results => {
-      console.log(results);
-      res.json(results);
-    })
-    .catch(
-      err => next(err)
-    );
-});
 
 /* POST/CREATE user on /api/users */
 router.post('/', (req, res, next) => {
@@ -127,7 +114,7 @@ router.post('/', (req, res, next) => {
       next(err);
     });
 
-  //create a sessions router this will belong to a specific user so use req.user.id
+  //extension: create a sessions router this will belong to a specific user so use req.user.id
 
 });
 
