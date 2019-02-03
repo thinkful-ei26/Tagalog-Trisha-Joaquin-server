@@ -25,7 +25,11 @@ const UserSchema = new mongoose.Schema({
   head: {
     type: Number,
     default: 0
-  }
+  },
+  counter: { 
+    type : Number,
+    default: 0
+  }, 
 });
 
 // _id still exists but just replacing user.id on virtualize whenever you toJSON something

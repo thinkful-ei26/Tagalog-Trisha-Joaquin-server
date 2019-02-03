@@ -14,12 +14,12 @@ router.use(jwtAuth);
 router.get('/', (req, res, next) => {
   User.findById(req.user.id)
     .then(user => {
-      const { head } = user;
+      const { head, counter } = user;
       //on click of the next button, change the currentQuestion
       //console.log('user', user);
       const { word, answer, id } = user.questionData[head]; //head is defaulted to zero
-      console.log('currentHead: ', head);
-      res.json({ word, answer, id, head: head });
+      //console.log('user get: ', user);
+      res.json({ counter, word, answer, id, head: head });
       //after confirming the answer matches on the client side, do a put request to change the m, we need the question id to be able to find the question id on the server
     })
     .catch(err => next(err));
@@ -32,7 +32,7 @@ router.put('/:userid', (req, res, next) => {
  
   User.findById(userid)
     .then(user => {
-     
+   
       //save the value of the current head
       let currentHead = user.head;
    
@@ -49,7 +49,7 @@ router.put('/:userid', (req, res, next) => {
         //change the totalCorrect of the user questions for progress bar
       }
 
-      /* ========= NEXT QUESTION LINKED LIST MANIPULATION ========= */
+      /* ========= NEXT QUESTION LINKED LIST ========= */
 
       //find the location of the answered node based on mValue
       let newLocation = currentNode.m;
@@ -58,11 +58,11 @@ router.put('/:userid', (req, res, next) => {
       user.head = currentNode.next > 0 ? currentNode.next : 0;
       
       let current = currentNode;
-      let counter = 0;
+      let nodeCounter = 0;
       //find the currentNode's new insertion point on questionData linkedlist
-      while (counter < newLocation && counter < user.questionData.length - 1) {
+      while (nodeCounter < newLocation && nodeCounter < user.questionData.length - 1) {
         current = user.questionData[current.next];
-        counter++;
+        nodeCounter++;
       }
 
       //node is now where we want our currentNode to be inserted
@@ -75,7 +75,11 @@ router.put('/:userid', (req, res, next) => {
       //save all the updates we just made to user.head and user.words:
       return User.findByIdAndUpdate(
         userid,
-        { head: user.head, questionData: [...user.questionData] },
+        { 
+          head: user.head, 
+          questionData: [...user.questionData],
+          counter: user.counter +1
+        },
         { new: true }
       ); //need to update questionData
     })
